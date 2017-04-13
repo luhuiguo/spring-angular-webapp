@@ -18,7 +18,7 @@
 
   <name>spring-angular-webapp</name>
   <description>Spring Boot + Angular application</description>
-
+  <url>https://luhuiguo.com/luhuiguo/spring-angular-webapp</url>
   <developers>
     <developer>
       <id>lhg</id>
