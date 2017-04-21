@@ -46,6 +46,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <!-- Maven plugins versions -->
+    <maven-archetype-plugin.version>3.0.1</maven-archetype-plugin.version>
     <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
     <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
     <!-- Librairies versions -->
@@ -101,18 +102,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>  
-
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
     <plugins>
@@ -122,20 +111,19 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-archetype-plugin</artifactId>
-        <version>3.0.1</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
-        <extensions>true</extensions>
+        <artifactId>maven-clean-plugin</artifactId>
         <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+          <filesets>
+            <fileset>
+              <directory>src/main/webapp</directory>
+            </fileset>            
+          </filesets>
         </configuration>
+      </plugin>      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-archetype-plugin</artifactId>
+        <version>${maven-archetype-plugin.version}</version>
       </plugin>
     </plugins>
   </build>
@@ -280,6 +268,9 @@
             <artifactId>maven-clean-plugin</artifactId>
             <configuration>
               <filesets>
+                <fileset>
+                  <directory>src/main/webapp</directory>
+                </fileset>
                 <fileset>
                   <directory>node</directory>
                 </fileset>
