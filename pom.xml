@@ -18,7 +18,7 @@
 
   <name>spring-angular-webapp</name>
   <description>Spring Boot + Angular application</description>
-  <url>https://luhuiguo.com/luhuiguo/spring-angular-webapp</url>
+  <url>https://github.com/luhuiguo/spring-angular-webapp</url>
   <developers>
     <developer>
       <id>lhg</id>
@@ -29,15 +29,15 @@
   </developers>
 
   <issueManagement>
-    <system>gitlib</system>
-    <url>https://luhuiguo.com/luhuiguo/spring-angular-webapp/issues</url>
+    <system>github</system>
+    <url>https://github.com/luhuiguo/spring-angular-webapp/issues</url>
   </issueManagement>
 
   <scm>
-    <connection>scm:git:https://luhuiguo.com/luhuiguo/spring-angular-webapp.git</connection>
-    <developerConnection>scm:git:git@luhuiguo.com:luhuiguo/spring-angular-webapp.git
+    <connection>scm:git:https://github.com/luhuiguo/spring-angular-webapp.git</connection>
+    <developerConnection>scm:git:git@github.com:luhuiguo/spring-angular-webapp.git
     </developerConnection>
-    <url>https://luhuiguo.com/luhuiguo/spring-angular-webapp</url>
+    <url>https://github.com/luhuiguo/spring-angular-webapp</url>
   </scm>
 
   <properties>
@@ -50,7 +50,7 @@
     <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
     <!-- Librairies versions -->
     <node.version>v7.9.0</node.version>
-    <yarn.version>v0.22.0</yarn.version>
+    <yarn.version>v0.23.2</yarn.version>
 
     <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
@@ -132,6 +132,7 @@
   </distributionManagement>
 
   <build>
+    <defaultGoal>spring-boot:run</defaultGoal>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
@@ -146,6 +147,58 @@
   </build>
   <profiles>
     <profile>
+      <id>frontend</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>${frontend-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>install node and yarn</id>
+                <goals>
+                  <goal>install-node-and-yarn</goal>
+                </goals>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <yarnVersion>${yarn.version}</yarnVersion>
+                </configuration>
+              </execution>
+              <execution>
+                <id>angular-cli install</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>global add @angular/cli</arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>yarn install</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>install --force</arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <id>yarn run build dev</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <arguments>run build</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>  
+    <profile>
       <id>dev</id>
       <activation>
         <activeByDefault>true</activeByDefault>
@@ -157,6 +210,27 @@
           <optional>true</optional>
         </dependency>
       </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>${frontend-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>yarn run build dev</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <phase>generate-resources</phase>
+                <configuration>
+                  <arguments>run build</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
     <profile>
       <id>prod</id>
@@ -219,31 +293,6 @@
                   <directory>node_modules</directory>
                 </fileset>
               </filesets>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <configuration>
-              <warSourceDirectory>target/www</warSourceDirectory>
-              <packagingExcludes>WEB-INF/classes/config/application-*.yml</packagingExcludes>
-              <archive>
-                <manifest>
-                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                  <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                </manifest>
-              </archive>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <configuration>
-              <arguments>
-                <argument>--spring.profiles.active=prod</argument>
-              </arguments>
-              <addResources>false</addResources>
-              <jvmArguments>-Djava.security.egd=file:/dev/./urandom</jvmArguments>
             </configuration>
           </plugin>
         </plugins>

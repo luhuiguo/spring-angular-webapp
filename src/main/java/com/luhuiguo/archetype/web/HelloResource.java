@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class HelloResource {
 
-  @GetMapping("/hello/{name}")
-  public ResponseEntity<String> getForDay(@PathVariable String name) {
-    return ResponseEntity.ok().body("Hello "+ name);
+  @GetMapping("/hello")
+  public ResponseEntity<String> sayHello() {
+    return ResponseEntity.ok().body("Hello World!");
   }
 }

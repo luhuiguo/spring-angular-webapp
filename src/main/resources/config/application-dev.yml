@@ -3,7 +3,7 @@ server:
   compression:
     enabled: false
 logging:
-  file: logs/application.log
+  file: target/logs/application.log
   level:
     root: INFO
 spring:

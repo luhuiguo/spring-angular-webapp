@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./target/out-tsc",
-    "baseUrl": "src/main/webapp",
+    "baseUrl": "src/main/frontend",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
