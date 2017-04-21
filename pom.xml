@@ -102,34 +102,16 @@
     </dependency>
   </dependencies>
 
-  <repositories>
-    <repository>
-      <id>luhuiguo</id>
-      <url>http://repo.luhuiguo.com/artifactory/libs-release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <id>luhuiguo</id>
-      <url>http://repo.luhuiguo.com/artifactory/libs-release</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
   <distributionManagement>
     <snapshotRepository>
-      <id>luhuiguo</id>
-      <url>http://repo.luhuiguo.com/artifactory/libs-snapshot-local</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </snapshotRepository>
     <repository>
-      <id>luhuiguo</id>
-      <url>http://repo.luhuiguo.com/artifactory/libs-release-local</url>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
-  </distributionManagement>
+  </distributionManagement>  
 
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
@@ -142,6 +124,18 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-archetype-plugin</artifactId>
         <version>3.0.1</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
       </plugin>
     </plugins>
   </build>
