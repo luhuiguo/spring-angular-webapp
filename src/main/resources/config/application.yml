@@ -6,7 +6,15 @@ logging:
   file: logs/application.log
   level:
     root: INFO
+info:
+  build:
+    artifact: "@project.artifactId@"
+    name: "@project.name@"
+    description: "@project.description@"
+    version: "@project.version@"
 spring:
+  profiles:
+    active: "@spring.profiles.active@"    
   thymeleaf:
     mode: HTML5
     cache: true    

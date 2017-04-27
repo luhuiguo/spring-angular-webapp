@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src/main/frontend",
-      "outDir": "src/main/webapp",
+      "outDir": "target/frontend",
       "assets": [
         "assets",
         "favicon.ico"

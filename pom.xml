@@ -12,7 +12,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>1.5.2.RELEASE</version>
+    <version>1.5.3.RELEASE</version>
     <relativePath/>
   </parent>
 
@@ -49,6 +49,10 @@
     <maven-archetype-plugin.version>3.0.1</maven-archetype-plugin.version>
     <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
     <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
+    <!-- Spring Profile-->
+    <spring.profiles.active>dev</spring.profiles.active>    
+    <frontend.install.skip>true</frontend.install.skip>
+    <frontend.build.skip>false</frontend.build.skip>    
     <!-- Librairies versions -->
     <node.version>v7.9.0</node.version>
     <yarn.version>v0.23.2</yarn.version>
@@ -104,22 +108,26 @@
   </dependencies>
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>target/frontend</directory>
+        <targetPath>static</targetPath>
+      </resource>
+    </resources>    
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-clean-plugin</artifactId>
         <configuration>
-          <filesets>
-            <fileset>
-              <directory>src/main/webapp</directory>
-            </fileset>            
-          </filesets>
-        </configuration>
-      </plugin>      
+          <profiles>
+            <profile>${spring.profiles.active}</profile>
+          </profiles>
+        </configuration>        
+      </plugin>    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-archetype-plugin</artifactId>
@@ -128,58 +136,6 @@
     </plugins>
   </build>
   <profiles>
-    <profile>
-      <id>frontend</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.github.eirslett</groupId>
-            <artifactId>frontend-maven-plugin</artifactId>
-            <version>${frontend-maven-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>install node and yarn</id>
-                <goals>
-                  <goal>install-node-and-yarn</goal>
-                </goals>
-                <configuration>
-                  <nodeVersion>${node.version}</nodeVersion>
-                  <yarnVersion>${yarn.version}</yarnVersion>
-                </configuration>
-              </execution>
-              <execution>
-                <id>angular-cli install</id>
-                <goals>
-                  <goal>yarn</goal>
-                </goals>
-                <configuration>
-                  <arguments>global add @angular/cli</arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>yarn install</id>
-                <goals>
-                  <goal>yarn</goal>
-                </goals>
-                <configuration>
-                  <arguments>install --force</arguments>
-                </configuration>
-              </execution>
-              <execution>
-                <id>yarn run build dev</id>
-                <goals>
-                  <goal>yarn</goal>
-                </goals>
-                <phase>generate-resources</phase>
-                <configuration>
-                  <arguments>run build</arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>  
     <profile>
       <id>dev</id>
       <activation>
@@ -200,6 +156,37 @@
             <version>${frontend-maven-plugin.version}</version>
             <executions>
               <execution>
+                <id>install node and yarn</id>
+                <goals>
+                  <goal>install-node-and-yarn</goal>
+                </goals>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <yarnVersion>${yarn.version}</yarnVersion>
+                  <skip>${frontend.install.skip}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>angular-cli install</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>global add @angular/cli</arguments>
+                  <skip>${frontend.install.skip}</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>yarn install</id>
+                <goals>
+                  <goal>yarn</goal>
+                </goals>
+                <configuration>
+                  <arguments>install --force</arguments>
+                  <skip>${frontend.install.skip}</skip>
+                </configuration>
+              </execution>            
+              <execution>
                 <id>yarn run build dev</id>
                 <goals>
                   <goal>yarn</goal>
@@ -207,6 +194,7 @@
                 <phase>generate-resources</phase>
                 <configuration>
                   <arguments>run build</arguments>
+                  <skip>${frontend.build.skip}</skip>
                 </configuration>
               </execution>
             </executions>
@@ -216,6 +204,11 @@
     </profile>
     <profile>
       <id>prod</id>
+      <properties>
+        <spring.profiles.active>prod</spring.profiles.active>
+        <frontend.install.skip>false</frontend.install.skip>
+        <frontend.build.skip>false</frontend.build.skip>
+      </properties>      
       <build>
         <plugins>
           <plugin>
@@ -231,6 +224,7 @@
                 <configuration>
                   <nodeVersion>${node.version}</nodeVersion>
                   <yarnVersion>${yarn.version}</yarnVersion>
+                  <skip>${frontend.install.skip}</skip>
                 </configuration>
               </execution>
               <execution>
@@ -240,6 +234,7 @@
                 </goals>
                 <configuration>
                   <arguments>global add @angular/cli</arguments>
+                  <skip>${frontend.install.skip}</skip>
                 </configuration>
               </execution>
               <execution>
@@ -249,6 +244,7 @@
                 </goals>
                 <configuration>
                   <arguments>install --force</arguments>
+                  <skip>${frontend.install.skip}</skip>
                 </configuration>
               </execution>
               <execution>
@@ -259,6 +255,7 @@
                 <phase>generate-resources</phase>
                 <configuration>
                   <arguments>run build -- --prod</arguments>
+                  <skip>${frontend.build.skip}</skip>
                 </configuration>
               </execution>
             </executions>
@@ -269,9 +266,6 @@
             <configuration>
               <filesets>
                 <fileset>
-                  <directory>src/main/webapp</directory>
-                </fileset>
-                <fileset>
                   <directory>node</directory>
                 </fileset>
                 <fileset>
@@ -280,9 +274,18 @@
               </filesets>
             </configuration>
           </plugin>
+          <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <profiles>
+                <profile>${spring.profiles.active}</profile>
+              </profiles>
+              <jvmArguments>-Djava.security.egd=file:/dev/./urandom</jvmArguments>
+            </configuration>
+          </plugin>          
         </plugins>
       </build>
-
     </profile>
   </profiles>
 
