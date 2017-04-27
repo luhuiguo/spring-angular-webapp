@@ -50,7 +50,8 @@
     <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
     <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
     <!-- Spring Profile-->
-    <spring.profiles.active>dev</spring.profiles.active>    
+    <spring.profiles.active>dev</spring.profiles.active> 
+    <!-- Frontend -->   
     <frontend.install.skip>true</frontend.install.skip>
     <frontend.build.skip>false</frontend.build.skip>    
     <!-- Librairies versions -->
@@ -275,6 +276,19 @@
             </configuration>
           </plugin>
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <packagingExcludes>WEB-INF/classes/config/application-*.yml</packagingExcludes>
+              <archive>
+                <manifest>
+                  <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                  <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                </manifest>
+              </archive>
+            </configuration>
+          </plugin>          
+          <plugin>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-maven-plugin</artifactId>
             <configuration>
@@ -288,5 +302,5 @@
       </build>
     </profile>
   </profiles>
-
 </project>
+
