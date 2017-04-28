@@ -17,9 +17,9 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    BrowserAnimationsModule,
     MdIconModule,
     MdButtonModule
   ],
