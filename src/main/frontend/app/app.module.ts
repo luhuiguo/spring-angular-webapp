@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdIconModule, MdButtonModule } from '@angular/material';
+import { MatIconModule, MatButtonModule } from '@angular/material';
 /* App Root */
 import { AppComponent } from './app.component';
 /* Feature Modules */
@@ -20,8 +20,8 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    MdIconModule,
-    MdButtonModule
+    MatIconModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
