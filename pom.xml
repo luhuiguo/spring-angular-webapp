@@ -47,16 +47,16 @@
     <java.version>1.8</java.version>
     <!-- Maven plugins versions -->
     <maven-archetype-plugin.version>3.0.1</maven-archetype-plugin.version>
-    <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
+    <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     <docker-maven-plugin.version>0.4.13</docker-maven-plugin.version>
     <!-- Spring Profile-->
     <spring.profiles.active>dev</spring.profiles.active> 
     <!-- Frontend -->   
-    <frontend.install.skip>true</frontend.install.skip>
+    <frontend.install.skip>false</frontend.install.skip>
     <frontend.build.skip>false</frontend.build.skip>    
     <!-- Librairies versions -->
-    <node.version>v7.9.0</node.version>
-    <yarn.version>v0.23.2</yarn.version>
+    <node.version>v10.13.0</node.version>
+    <yarn.version>v1.13.0</yarn.version>
 
     <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
     <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
